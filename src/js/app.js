@@ -36,6 +36,8 @@ App = {
      * Replace me...
      */
 
+    
+
     return App.bindEvents();
   },
 
@@ -57,7 +59,36 @@ App = {
     /*
      * Replace me...
      */
-  }
+  },
+  
+  handleBreedCheckbox: function(breed) {
+    var age = document.getElementById('ageSlider').value;
+
+    if (document.getElementById(breed).checked) {
+      for (i = 0; i < 16; i++) {
+        if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
+          var location = $('.col-lg-3').eq(i).find('.pet-location').text()
+          if (document.getElementById(location).checked){
+            $('.col-lg-3').eq(i).show();
+          }
+        }
+      };
+      if (age !== '0'){
+        App.handleSlider(age);
+      }
+    } else {
+      if (age !== '0'){
+        App.handleSlider(age);
+      }
+      for (i = 0; i < 16; i++) {
+        if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
+          $('.col-lg-3').eq(i).hide();
+        }
+        }
+      };
+
+      App.markAdopted();
+    },
 
 };
 
@@ -66,3 +97,4 @@ $(function() {
     App.init();
   });
 });
+
