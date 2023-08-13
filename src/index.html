@@ -66,7 +66,40 @@
       <div id="hasVoted" style="font-size: 19px; color: tomato;margin-bottom: 26px; text-align: center; display: none;">
           Voting Success!
       </div>
-
+      
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Breed Filter
+          <ion-icon name="caret-down-outline"></ion-icon>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-select">
+            <li>
+              <div>
+                <input type="checkbox" id="French Bulldog" name="French Bulldog" checked onchange="App.handleBreedCheckbox(this.id)">
+                <label for="French Bulldog">French Bulldog</label>
+              </div>
+            </li>
+            <li>
+              <div>
+                <input type="checkbox" id="Scottish Terrier" name="Scottish Terrier" checked onchange="App.handleBreedCheckbox(this.id)">
+                <label for="Scottish Terrier">Scottish Terrier</label>
+            </div>
+            </li>
+            <li>
+              <div>
+                <input type="checkbox" id="Golden Retriever" name="Golden Retriever" checked onchange="App.handleBreedCheckbox(this.id)">
+                <label for="Golden Retriever">Golden Retriever</label>
+              </div>
+            </li>
+            <li>
+              <div>
+                <input type="checkbox" id="Boxer" name="Boxer" checked onchange="App.handleBreedCheckbox(this.id)">
+                <label for="Boxer">Boxer</label>
+            </div>
+            </li>
+                                
+        </ul>
+    </div>
 
       <div id="petsRow" class="row">
         <!-- PETS LOAD HERE -->
