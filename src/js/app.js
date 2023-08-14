@@ -306,41 +306,113 @@ App = {
         });
     });
   },
+  
     /*
      * Replace me...
      */
-  },
-  
-  handleBreedCheckbox: function(breed) {
-    var age = document.getElementById('ageSlider').value;
 
-    if (document.getElementById(breed).checked) {
-      for (i = 0; i < 16; i++) {
-        if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
+    handleSlider: function(value) {
+      if (value != "0"){
+        for (i = 0; i < 16; i++) {
+          if ($('.col-lg-3').eq(i).find('.pet-age').text() !== value.toString()) {
+            $('.col-lg-3').eq(i).hide();
+          } if ($('.col-lg-3').eq(i).find('.pet-age').text() == value.toString()) {
+            var location = $('.col-lg-3').eq(i).find('.pet-location').text()
+            if (document.getElementById(location).checked){
+              var breed = $('.col-lg-3').eq(i).find('.pet-breed').text()
+              if (document.getElementById(breed).checked){
+                $('.col-lg-3').eq(i).show();
+              }
+            }
+          }
+        };
+      } else {
+        for (i = 0; i < 16; i++) {
           var location = $('.col-lg-3').eq(i).find('.pet-location').text()
           if (document.getElementById(location).checked){
-            $('.col-lg-3').eq(i).show();
+            var breed = $('.col-lg-3').eq(i).find('.pet-breed').text()
+            if (document.getElementById(breed).checked){
+              $('.col-lg-3').eq(i).show();
+            }
           }
-        }
-      };
-      if (age !== '0'){
-        App.handleSlider(age);
+        };
       }
-    } else {
-      if (age !== '0'){
-        App.handleSlider(age);
-      }
-      for (i = 0; i < 16; i++) {
-        if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
-          $('.col-lg-3').eq(i).hide();
-        }
-        }
-      };
-
       App.markAdopted();
     },
 
-};
+    handleBreedCheckbox: function(breed) {
+      var age = document.getElementById('ageSlider').value;
+  
+      if (document.getElementById(breed).checked) {
+        for (i = 0; i < 16; i++) {
+          if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
+            var location = $('.col-lg-3').eq(i).find('.pet-location').text()
+            if (document.getElementById(location).checked){
+              $('.col-lg-3').eq(i).show();
+            }
+          }
+        };
+        if (age !== '0'){
+          App.handleSlider(age);
+        }
+      } else {
+        if (age !== '0'){
+          App.handleSlider(age);
+        }
+        for (i = 0; i < 16; i++) {
+          if ($('.col-lg-3').eq(i).find('.pet-breed').text() == breed) {
+            $('.col-lg-3').eq(i).hide();
+          }
+          }
+        };
+      },
+  
+      handleLocationCheckbox: function(location) {
+        var age = document.getElementById('ageSlider').value;
+  
+        if (document.getElementById(location).checked) {
+          for (i = 0; i < 16; i++) {
+            if ($('.col-lg-3').eq(i).find('.pet-location').text() == location) {
+              var breed = $('.col-lg-3').eq(i).find('.pet-breed').text()
+              if (document.getElementById(breed).checked){
+                $('.col-lg-3').eq(i).show();
+              }
+            }
+          };
+          if (age !== '0'){
+            App.handleSlider(age);
+          }
+        } else {
+          if (age !== '0'){
+            App.handleSlider(age);
+          }
+          for (i = 0; i < 16; i++) {
+            if ($('.col-lg-3').eq(i).find('.pet-location').text() == location) {
+              $('.col-lg-3').eq(i).hide();
+            }
+            }
+          };
+        },
+
+        handleAgeCheckbox: function(age) {
+          if (document.getElementById(age).checked) {
+            for (i = 0; i < 16; i++) {
+              if ($('.col-lg-3').eq(i).find('.pet-location').text() == location) {
+                var breed = $('.col-lg-3').eq(i).find('.pet-breed').text()
+                if (document.getElementById(breed).checked){
+                  $('.col-lg-3').eq(i).show();
+                }
+              }
+            };
+          } else {
+            for (i = 0; i < 16; i++) {
+              if ($('.col-lg-3').eq(i).find('.pet-age').text() == age) {
+                $('.col-lg-3').eq(i).hide();
+              }
+              }
+            };
+          },
+  };
 
 $(function() {
   $(window).load(function() {
