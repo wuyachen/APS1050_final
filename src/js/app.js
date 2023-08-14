@@ -21,11 +21,11 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON("Election.json", function(election) {
+    $.getJSON("MostAdoptedBreed.json", function(mostadoptedbreed) {
       // Instantiate a new truffle contract from the artifact
-      App.contracts.Election = TruffleContract(election);
+      App.contracts.MostAdoptedBreed = TruffleContract(mostadoptedbreed);
       // Connect provider to interact with contract
-      App.contracts.Election.setProvider(App.web3Provider);
+      App.contracts.MostAdoptedBreed.setProvider(App.web3Provider);
 
       return App.render();
     });
@@ -48,14 +48,14 @@ App = {
     });
 
     // Load contract data
-    App.contracts.Election.deployed().then(function(instance) {
+    App.contracts.MostAdoptedBreed.deployed().then(function(instance) {
       electionInstance = instance;
-      return electionInstance.candidatesCount();
-    }).then(function(candidatesCount) {
+      return electionInstance.breedsCount();
+    }).then(function(breedsCount) {
       var candidatesResults = $("#candidatesResults");
       candidatesResults.empty();
 
-      for (var i = 1; i <= candidatesCount; i++) {
+      for (var i = 1; i <= breedsCount; i++) {
         electionInstance.candidates(i).then(function(candidate) {
           var id = candidate[0];
           var name = candidate[1];

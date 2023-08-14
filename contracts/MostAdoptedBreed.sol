@@ -2,8 +2,9 @@ pragma solidity ^0.5.0;
 
 contract MostAdoptedBreed {
     struct Breed {
+        uint id;
         string breedName;
-        uint adoptCount;
+        uint voteCount;
     }
 
     uint public breedsCount;
@@ -22,14 +23,22 @@ contract MostAdoptedBreed {
 
     function addBreed (string memory _breedName) public {
         breedsCount ++;
-        breeds.push(Breed(_breedName, 0));
+        breeds.push(Breed(breedsCount, _breedName, 0));
     }
 
     function addAdoption (string memory _breedName) public {
         for (uint i = 0; i < breedsCount; i++) {
             if (stringsEquals(breeds[i].breedName, _breedName)) {
-                breeds[i].adoptCount ++;
+                breeds[i].voteCount ++;
                 return;
+            }
+        }
+    }
+
+    function candidatesCount (string memory _breedName) public view returns (uint count) {
+        for (uint i = 0; i < breedsCount; i++) {
+            if (stringsEquals(breeds[i].breedName, _breedName)) {
+                return breeds[i].voteCount;
             }
         }
     }
@@ -38,8 +47,8 @@ contract MostAdoptedBreed {
         uint maxAdoptCount = 0;
         string memory maxAdoptBreedName = "";
         for (uint i = 0; i < breedsCount; i++) {
-            if (breeds[i].adoptCount > maxAdoptCount) {
-                maxAdoptCount = breeds[i].adoptCount;
+            if (breeds[i].voteCount > maxAdoptCount) {
+                maxAdoptCount = breeds[i].voteCount;
                 maxAdoptBreedName = breeds[i].breedName;
             }
         }

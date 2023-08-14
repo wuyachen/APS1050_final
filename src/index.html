@@ -26,6 +26,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th scope="col">Votes</th>
+                  <th scope="col">Party</th>
                 </tr>
               </thead>
               <tbody id="candidatesResults">
@@ -36,6 +37,28 @@
           </div>
         </div>
       </div>
+
+      <form onSubmit="App.addCandidate(); return false">
+        <div class="form-group">
+          <label for="candidateName">Candidate Name</label>
+          <input id="candidateName" type="text">
+          <label for="candidateParty">Candidate Party</label>
+          <input id="candidateParty" type="text">
+        </div>
+        <button type="submit" class="btn btn-success">Save Candidate</button>
+        <hr />
+      </form>
+
+
+      <form id="vote" onSubmit="App.castVote(); return false;">
+        <div class="form-group">
+          <label for="candidatesSelect">Select Candidate</label>
+          <select class="form-control" id="candidatesSelect">
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Vote</button>
+        <hr />
+      </form>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
