@@ -232,6 +232,25 @@ App = {
     });
   },
 
+  handleMostAdopted: function () {
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var voteInstance;
+
+      App.contracts.Adoption.deployed().then(function(instance) {
+        voteInstance = instance;
+        return voteInstance.mostAdopted();
+      }).then(function(result) {
+        $("#mostAdopted").html(result);
+      }).catch(function(err) {
+        console.error(err);
+      });
+    });
+  },
+
 
 };
 
