@@ -190,6 +190,7 @@ fieldset {
           <strong>Owner</strong>: <span class="pet-owner">None</span><br />
           <strong>Owner Address:</strong><br /><span class="adopter-address"></span><br />
 
+
         </div>
       </div>
     </div>
@@ -203,5 +204,75 @@ fieldset {
   <script src="js/truffle-contract.js"></script>
   <script src="js/app.js"></script>
 </body>
+    <div id="petTemplate" style="display: none;">
+      <div class="col-sm-6 col-md-6 col-lg-4">
+        <div class="panel panel-default panel-pet">
+          <div class="panel-heading">
+            <h3 class="panel-title">Scrappy</h3>
+          </div>
+          <div class="panel-body">
+            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;" src="images/golden-retriever.jpeg" data-holder-rendered="true">
+            <br/><br/>
+            <strong>Breed</strong>: <span class="pet-breed">Golden Retriever</span><br/>
+            <strong>Age</strong>: <span class="pet-age">3</span><br/>
+            <strong>Location</strong>: <span class="pet-location">Warren, MI</span><br/><br/>
+
+            <button class="btn btn-default btn-adopt" type="button" data-id="0">Adopt</button>
+            <button class="btn btn-default btn-return" disabled type="button" data-id="0">Return</button>
+            <br/><br/>
+            <strong>Owner Address:</strong><br/><span class="owner-address"></span><br/>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    <br/>
+
+    <div class="container" style="width: 700px;">
+      <div style="font-size: 30px; text-align: center">
+        Vote for the best pets!
+      </div><br/>
+      <div id="voteSuccess" style="font-size: 20px; color: tomato; text-align: center; display: none;">
+        Voting Success!
+      </div><br/>
+      <div id="voteArea" >
+        <form id="voteList" onSubmit="App.handleVote(); return false;" style="display: none;">
+          <div class="form-group">
+            <div class="col-md-12 text-center">
+              <label for="petSelection">Select the best pet</label>
+            </div>
+            <select class="form-control" id="petSelection"></select>
+          </div>
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div><br/><br/>
+          <hr>
+        </form>
+        <form id="mostAdopted" onsubmit="App.handleMostAdopted(); return false;" style="display: none;">
+          <div class="form-group">
+            <div class="col-md-12 text-center">
+              <label for="mostAdoptedSelection">Most Adopted Pet</label>
+            </div>
+            <select class="form-control" id="mostAdoptedSelection"></select>
+          </div>
+          <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div><br/><br/>
+          <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">Pet Name</th>
+              <th class="text-center">Total Votes</th>
+            </tr>
+          </thead>
+          <tbody id="voteResults" style="text-align: center"></tbody>
+        </table>
+        <hr>
+      </div>
+    </div>
+  <hr/>
+  <br/><br/>
 
 </html>

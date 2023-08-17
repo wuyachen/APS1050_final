@@ -21,74 +21,104 @@ contract Adoption {
  	 	return adopters;
 	}
 
+    event ReturnAnimal(uint petId);
 
+    function returnBack(uint petId) public returns (uint) {
+        require(petId >= 0 && petId <= 15);
 
+        if (adopters[petId] == msg.sender) {
+            adopters[petId] = address(0);
+        }
 
+        emit ReturnAnimal(petId);
 
-    	event ReturnedAnimal(uint petId);
+        return petId;
+    }
 
-    	function returnAnimal(uint petId) public returns (uint) {
-        	require(petId >= 0 && petId <= 15);
-
-        	// If the animal has been adopted by msg.sender, the animal can be returned
-        	if (adopters[petId] == msg.sender) {
-            		// "Return" an animal by setting the address of it's adopter back to 0
-            		adopters[petId] = address(0);
-        	}
-
-        	emit ReturnedAnimal(petId);
-
-        	return petId;
-    	}
-
-	// Model a Candidate for voting
-	struct Candidate {
+	struct Pet {
 		uint id;
 		string name;
-		uint voteCount;
+		uint count;
+		string breed;
 	}
-	mapping(address => bool) public voters;
-	mapping(uint => Candidate) public candidates;
-	uint public candidatesCount;
 
-	event votedEvent (
-		uint indexed _candidateId
-	);
+	mapping(address => bool) public voters;
+	mapping(uint => Pet) public candidates;
+	uint public petsCount;
+	uint public STCount; //Scottish Terrier
+	uint public FBCount; //French Bulldog
+	uint public BXCount; //Boxer
+	uint public GRCount; //Golden Retriever
+
+
+	function addPet(string memory _name, string memory _breed) private {
+		petsCount ++;
+		candidates[petsCount] = Pet(petsCount, _name, 0, _breed);
+	}
 
 	constructor () public {
-		addCandidate("Frieda");
-		addCandidate("Gina");
-		addCandidate("Collins");
-		addCandidate("Melissa");
-		addCandidate("Jeanine");
-		addCandidate("Elvia");
-		addCandidate("Latisha");
-		addCandidate("Coleman");
-		addCandidate("Nichole");
-		addCandidate("Fran");
-		addCandidate("Leonor");
-		addCandidate("Dean");
-		addCandidate("Stevenson");
-		addCandidate("Kristina");
-		addCandidate("Ethel");
-		addCandidate("Terry");
+		addPet("Frieda", "Scottish Terrier");
+		addPet("Gina", "Scottish Terrier");
+		addPet("Collins", "French Bulldog");
+		addPet("Melissa", "Boxer");
+		addPet("Jeanine", "French Bulldog");
+		addPet("Elvia", "French Bulldog");
+		addPet("Latisha", "Golden Retriever");
+		addPet("Coleman", "Golden Retriever");
+		addPet("Nichole", "French Bulldog");
+		addPet("Fran", "Boxer");
+		addPet("Leonor", "Boxer");
+		addPet("Dean", "Scottish Terrier");
+		addPet("Stevenson", "French Bulldog");
+		addPet("Kristina", "Golden Retriever");
+		addPet("Ethel", "Golden Retriever");
+		addPet("Terry", "Golden Retriever");
 	}
 
-	function addCandidate(string memory _name) private {
-		candidatesCount ++;
-		candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
-	}
+	event voteAnimal (uint petId);
 
-	function vote(uint _candidateId) public {
-                //can not vote more than once
-		require(!voters[msg.sender]);
-		require(_candidateId > 0 && _candidateId <= candidatesCount);
-		// record vote status
+	function stringsEquals(string memory s1, string memory s2) private pure returns (bool) {
+        bytes memory b1 = bytes(s1);
+        bytes memory b2 = bytes(s2);
+        uint256 l1 = b1.length;
+        if (l1 != b2.length) return false;
+        for (uint256 i=0; i<l1; i++) {
+            if (b1[i] != b2[i]) return false;
+        }
+        return true;
+    }
+
+	function vote(uint petId) public {
+		require(petId >= 0 && petId <= 15);
+		candidates[petId].count ++;
 		voters[msg.sender] = true;
-		// update the vote Count
-		candidates[_candidateId].voteCount ++;
+		if (stringsEquals(candidates[petId].breed, "Scottish Terrier")) {
+			STCount ++;
+		} else if (stringsEquals(candidates[petId].breed, "French Bulldog")) {
+			FBCount ++;
+		} else if (stringsEquals(candidates[petId].breed, "Boxer")) {
+			BXCount ++;
+		} else if (stringsEquals(candidates[petId].breed, "Golden Retriever")) {
+			GRCount ++;
+		} else {
+			//error Invalid breed
+		}
 
-		emit votedEvent(_candidateId);
+		emit voteAnimal(petId);
+	}
+
+	function mostAdopted() public returns (string memory){
+		if (STCount >= FBCount && STCount >= BXCount && STCount >= GRCount) {
+			return "Scottish Terrier";
+		} else if (FBCount >= STCount && FBCount >= BXCount && FBCount >= GRCount) {
+			return "French Bulldog";
+		} else if (BXCount >= STCount && BXCount >= FBCount && BXCount >= GRCount) {
+			return "Boxer";
+		} else if (GRCount >= STCount && GRCount >= FBCount && GRCount >= BXCount) {
+			return "Golden Retriever";
+		} else {
+			return "No breed is most adopted";
+		}
 	}
 
 

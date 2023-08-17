@@ -1,8 +1,6 @@
 App = {
   web3Provider: null,
   contracts: {},
-  account: '0x0',
-  hasVoted: false,
 
   init: async function() {
     // Load pets.
@@ -17,8 +15,7 @@ App = {
         petTemplate.find('.pet-age').text(data[i].age);
         petTemplate.find('.pet-location').text(data[i].location);
         petTemplate.find('.btn-adopt').attr('data-id', data[i].id);
-	      petTemplate.find('.pet-owner').text(data[i].owner);
-	      petTemplate.find(".btn-return").attr("data-id", data[i].id);
+	      petTemplate.find('.btn-return').attr("data-id", data[i].id);
 
         petsRow.append(petTemplate.html());
       }
@@ -47,15 +44,6 @@ App = {
 
     web3 = new Web3(App.web3Provider);
 
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-      const account = accounts[0];
-      App.account = accounts[0]
-
-    });
-
     return App.initContract();
   },
 
@@ -68,14 +56,9 @@ App = {
       // Set the provider for our contract
       App.contracts.Adoption.setProvider(App.web3Provider);
 
-     // update info after user made a vote.
-      App.listenForEvents();
-
       // Use our contract to retrieve and mark the adopted pets
       return App.markAdopted();
     });
-
-    
 
     return App.bindEvents();
   },
@@ -85,142 +68,6 @@ App = {
     $(document).on("click", ".btn-return", App.handleReturn);
   },
 
-  // Listen for events from the contract
-  listenForEvents: function() {
-      App.contracts.Adoption.deployed().then(function(instance) {
-        instance.votedEvent({}, {
-          fromBlock: 0,
-          toBlock: 'latest'
-        }).watch(function(error, event) {
-          App.markAdopted();
-        });
-      });
-  },
-
-
-  markAdopted: function(adopters, account) {
-    var adoptionInstance;
-    var clients = new Set();
-
-    var content = $("#content");
-    content.hide();
-    $('#voteDropList').hide();
-    $("#loader").show();
-    $('#clientsAdoptedNum').text("Total number of clients: " + clients.size)
-
-    App.contracts.Adoption.deployed().then(function(instance) {
-      adoptionInstance = instance;
-      return adoptionInstance.getAdopters.call();
-    }).then(function(adopters) {
-
-
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-      account=accounts[0];
-      for (i = 0; i < adopters.length; i++) {
-        if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
-          $('.panel-pet').eq(i).find(".btn-adopt").prop("disabled", true);
-	        $(".panel-pet").eq(i).find(".btn-return").removeProp("disabled").addClass("btn-success");
-          $(".panel-pet").eq(i).find(".adopter-address").html(adopters[i]);
-
-	  if (adopters[i] == account) {
-              $('.panel-pet').eq(i).find('.pet-owner').text('You');
-            } else {
-              $('.panel-pet').eq(i).find('.pet-owner').text('Someone Else'); }
-          }		
-       }                  
-
-
-    });  
-
-   
-
-      web3.eth.getAccounts(function(error, accounts) {
-        if (error) {
-          console.log(error);
-        }
-            
-           // show the candidate pets ballot option 
-              var candArray = [];
-              for (var i = 1; i <= 16; i++) { 
-                  candArray.push(adoptionInstance.candidates(i));
-              }
-
-              Promise.all(candArray).then(function(values) {
-                  var candidatesResults = $("#candidatesResults");
-                  candidatesResults.empty();
-
-                  var candidatesSelect = $('#candidatesSelect');
-                  candidatesSelect.empty();
-
-                for (var i = 0; i < 16; i++) { 
-                  var id = values[i][0];
-                  var name = values[i][1];
-                  var voteCount = values[i][2];
-
-                  if (voteCount.toNumber()>0) {
-                      // Render candidate Result only if the vote is non-zero.
-                      var candidateTemplate = "</th><td>" + name + "</td><td>" + voteCount + "</td></tr>"
-                      candidatesResults.append(candidateTemplate);
-                  }
-
-                  // show candidate ballot option
-                  var candidateOption = "<option value='" + id + "' >" + name + "</ option>"
-                  candidatesSelect.append(candidateOption);
-                  }
-              });
-
-                // show the voting components.
-                content.show();
-                // check if user voted already.
-                adoptionInstance.voters(accounts[0]).then(function(hasVoted) {
-                  if (hasVoted) {
-                      $("#voteDropList").hide();
-                      $("#hasVoted").show();
-                  } else {
-                      $("#voteDropList").show();
-                  }
-                  $("#loader").hide();
-                }).catch(function(error) {
-                  console.warn(error);
-                });    
-      
-         });  
-
-	$("#clientsAdoptedNum").text("Total number of clients: " + clients.size)
-                 
-    }).catch(function(err) {
-      console.log(err.message);
-    });
-  },
-
-  markReturned: function (adopters) {
-    var adoptionInstance;
-
-    App.contracts.Adoption.deployed()
-      .then(function (instance) {
-        adoptionInstance = instance;
-
-        return adoptionInstance.getAdopters.call();
-      })
-      .then(function (adopters) {
-        for (i = 0; i < adopters.length; i++) {
-          if (adopters[i] == "0x0000000000000000000000000000000000000000") {
-            $(".panel-pet").eq(i).find(".btn-adopt").removeProp("disabled");
-            $(".panel-pet").eq(i).find(".btn-return").prop("disabled", true).removeClass("btn-success");
-            $(".panel-pet").eq(i).find(".adopter-address").html("");
-            $('.panel-pet').eq(i).find('.pet-owner').text('None');
-          }
-        }
-      })
-      .catch(function (err) {
-        console.log(err.message);
-      });
-  },
-
- 
   handleAdopt: function(event) {
     event.preventDefault();
 
@@ -248,41 +95,101 @@ App = {
     });
   },  
 
-  // handle the voting process when user click the vote button.
-  castVote: function() {
 
+  markAdopted: function(adopters, account) {
+    var adoptionInstance;
 
-  web3.eth.getAccounts(function(error, accounts) {
+    App.contracts.Adoption.deployed().then(function(instance) {
+      adoptionInstance = instance;
+      return adoptionInstance.getAdopters.call();
+    }).then(function(adopters) {
+      for (i = 0; i < adopters.length; i++) {
+        if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
+          $('.panel-pet').eq(i).find(".btn-adopt").attr('disabled', true);
+	        $('.panel-pet').eq(i).find(".btn-return").removeProp("disabled").addClass("btn-success");
+          $('.panel-pet').eq(i).find(".owner-address").html(adopters[i]);
+          }		
+       }  
+
+      var pets = [];
+      for (var i = 1; i <= 16; i++) { 
+        pets.push(adoptionInstance.candidates(i));
+      }      
+
+      web3.eth.getAccounts(function(error, accounts) {
         if (error) {
           console.log(error);
         }
 
-    account=accounts[0];
-    // the candidate petID
-    var candidateId = $('#candidatesSelect').val();
+        var voteArea = $("#voteArea");
+        voteArea.show();
+        var voteResults = $("#voteResults");
+        var petSelection = $('#petSelection');
 
-    App.contracts.Adoption.deployed().then(function(instance) {
-      return instance.vote(candidateId, { from: account });
-    }).then(function(result) {
-      // Wait for votes to update
-      $('#voteDropList').hide();
-      $("#loader").show();
+        adoptionInstance.voters(accounts[0]).then(function(voteSuccess) {
+          if (voteSuccess) {
+            $("#voteSuccess").show();
+            $("#voteList").hide();
+          } else {
+            $("#voteList").show();
+          }
+        }); 
+            
+        Promise.all(pets).then(function(values) {
 
+          voteResults.empty();
+          petSelection.empty();
 
-   });
+          for (var i = 0; i < 16; i++) { 
+            var petId = values[i][0];
+            var petName = values[i][1];
+                  //var breed = values[i][2]
+            var count = values[i][2];
 
+            petSelection.append("<option value='" + petId + "' >" + petName + "</option>");
+
+            if (count>0) {
+                      //+ breed + "</td><td>" 
+              voteResults.append("<tr><td>" + petName + "</td><td>" + count + "</td></tr>");
+            }
+          }
+        }); 
+      
+      });  
+                 
     }).catch(function(err) {
-      console.error(err);
+      console.log(err.message);
     });
   },
 
+  hasReturned: function (adopters) {
+    var adoptionInstance;
 
- handleReturn: function (event) {
+    App.contracts.Adoption.deployed().then(function (instance) {
+        adoptionInstance = instance;
+
+        return adoptionInstance.getAdopters.call();
+      }).then(function (adopters) {
+        for (i = 0; i < adopters.length; i++) {
+          if (adopters[i] == "0x0000000000000000000000000000000000000000") {
+            $(".panel-pet").eq(i).find(".btn-adopt").removeProp("disabled");
+            $(".panel-pet").eq(i).find(".btn-return").attr("disabled", true).removeClass("btn-success");
+            $(".panel-pet").eq(i).find(".owner-address").html("");
+          }
+        }
+      })
+      .catch(function (err) {
+        console.log(err.message);
+      });
+  },
+
+
+  handleReturn: function (event) {
     event.preventDefault();
 
     var petId = parseInt($(event.target).data("id"));
 
-    var returningInstance;
+    var returnInstance;
 
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
@@ -291,19 +198,56 @@ App = {
 
       var account = accounts[0];
 
-      App.contracts.Adoption.deployed()
-        .then(function (instance) {
-          returningInstance = instance;
-
-          // Execute return as a transaction by sending account
-          return returningInstance.returnAnimal(petId, { from: account });
-        })
-        .then(function () {
-          return App.markReturned();
-        })
-        .catch(function (err) {
+      App.contracts.Adoption.deployed().then(function (instance) {
+          returnInstance = instance;
+          return returnInstance.returnBack(petId, { from: account });
+        }).then(function () {
+          return App.hasReturned();
+        }).catch(function (err) {
           console.log(err.message);
         });
+    });
+  },
+
+  handleVote: function () {
+
+    var petId = $('#petSelection').val();
+    var voteInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var account=accounts[0];
+
+      App.contracts.Adoption.deployed().then(function(instance) {
+        voteInstance = instance;
+        return voteInstance.vote(petId, { from: account });
+      }).then(function(result) {
+        return App.markAdopted();
+      }).catch(function(err) {
+        console.error(err);
+      });
+    });
+  },
+
+  handleMostAdopted: function () {
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var voteInstance;
+
+      App.contracts.Adoption.deployed().then(function(instance) {
+        voteInstance = instance;
+        return voteInstance.mostAdopted();
+      }).then(function(result) {
+        $("#mostAdopted").html(result);
+      }).catch(function(err) {
+        console.error(err);
+      });
     });
   },
   
@@ -370,9 +314,11 @@ App = {
           
   };
 
+
+
+
 $(function() {
   $(window).load(function() {
     App.init();
   });
 });
-
