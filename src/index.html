@@ -18,6 +18,16 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+<style>
+  fieldset, input {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+fieldset {
+    margin:0;
+}
+</style>
 
 <body>
   <div class="container">
@@ -68,15 +78,12 @@
     <div id="hasVoted" style="font-size: 19px; color: tomato;margin-bottom: 26px; text-align: center; display: none;">
       Voting Success!
     </div>
-
-    <div class="slidecontainer">
-      <div class="slidercaption">Age:</div>
-      <input type="range" min="0" max="5" value="0" class="slider" id="ageSlider" step = "1"
-        onchange="App.handleSlider(this.value)">
-    </div>
-
+    <table>
+      <tr>
+        <td>
     <fieldset>
 
+      <legend>Breed</legend>
       <div>
         <input type="checkbox" id="French Bulldog" name="French Bulldog" checked onchange="App.handleBreedCheckbox(this.id)">
         <label for="French Bulldog">French Bulldog</label>
@@ -97,8 +104,12 @@
           <label for="Scottish Terrier">Scottish Terrier</label>
       </div>
   </fieldset>
+</td>
+<td>
+
   <fieldset>
   
+    <legend>Location</legend>
       <div>
         <input type="checkbox" id="Lisco, Alabama" name="Lisco, Alabama" checked onchange="App.handleLocationCheckbox(this.id)">
         <label for="Lisco, Alabama">Lisco, Alabama</label>
@@ -125,108 +136,34 @@
       </div>
   
   </fieldset>
+</td>
+<td>
+
+
 
   <fieldset>
   
+    <legend>Age</legend>
     <div>
-      <input type="checkbox" id="Lisco, Alabama" name="Lisco, Alabama" checked onchange="App.handleLocationCheckbox(this.id)">
-      <label for="Lisco, Alabama">Lisco, Alabama</label>
+      <input type="checkbox" id="2" name="2" checked onchange="App.handleAgeCheckbox(this.id)">
+      <label for="2">2</label>
     </div>
 
     <div>
-        <input type="checkbox" id="Freeburn, Idaho" name="Freeburn, Idaho" checked onchange="App.handleLocationCheckbox(this.id)">
-        <label for="Freeburn, Idaho">Freeburn, Idaho</label>
+        <input type="checkbox" id="3" name="3" checked onchange="App.handleAgeCheckbox(this.id)">
+        <label for="3">3</label>
       </div>
 
     <div>
-        <input type="checkbox" id="Innsbrook, Illinois" name="Innsbrook, Illinois" checked onchange="App.handleLocationCheckbox(this.id)">
-        <label for="Innsbrook, Illinois">Innsbrook, Illinois</label>
+        <input type="checkbox" id="4" name="4" checked onchange="App.handleAgeCheckbox(this.id)">
+        <label for="4">4</label>
     </div>
+  </td>
+  </tr>
 
-    <div>
-        <input type="checkbox" id="Windsor, Montana" name="Windsor, Montana" checked onchange="App.handleLocationCheckbox(this.id)">
-        <label for="Windsor, Montana">Windsor, Montana</label>
-    </div>
-
-    <div>
-        <input type="checkbox" id="Dawn, Wisconsin" name="Dawn, Wisconsin" checked onchange="App.handleLocationCheckbox(this.id)">
-        <label for="Dawn, Wisconsin">Dawn, Wisconsin</label>
-    </div>
+  </table>
 
 </fieldset>
-
-    <div class="input-group-btn">
-      <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Breed Filter
-        <ion-icon name="caret-down-outline"></ion-icon>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-select">
-        <li>
-          <div>
-            <input type="checkbox" id="French Bulldog" name="French Bulldog" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="French Bulldog">French Bulldog</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Scottish Terrier" name="Scottish Terrier" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Scottish Terrier">Scottish Terrier</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Golden Retriever" name="Golden Retriever" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Golden Retriever">Golden Retriever</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Boxer" name="Boxer" checked onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Boxer">Boxer</label>
-          </div>
-        </li>
-      </ul>
-
-      <button type="button" class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        Breed Filter
-        <ion-icon name="caret-down-outline"></ion-icon>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-select">
-        <li>
-          <div>
-            <input type="checkbox" id="French Bulldog" name="French Bulldog" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="French Bulldog">French Bulldog</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Scottish Terrier" name="Scottish Terrier" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Scottish Terrier">Scottish Terrier</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Golden Retriever" name="Golden Retriever" checked
-              onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Golden Retriever">Golden Retriever</label>
-          </div>
-        </li>
-        <li>
-          <div>
-            <input type="checkbox" id="Boxer" name="Boxer" checked onchange="App.handleBreedCheckbox(this.id)">
-            <label for="Boxer">Boxer</label>
-          </div>
-        </li>
-      </ul>
-
-    </div>
 
     <div id="petsRow" class="row">
       <!-- PETS LOAD HERE -->
