@@ -39,45 +39,8 @@ fieldset {
       </div>
     </div>
 
-    <div class="container" style="width: 650px;">
-      <div style="font-size: 26px; margin-bottom: 13px; text-align: center">
-        Vote for the best pets!
-      </div>
-      <div id="content">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col" style="text-align: center">Name</th>
-              <th scope="col" style="text-align: center">Votes</th>
-            </tr>
-          </thead>
-          <tbody id="candidatesResults" style="text-align: center">
-          </tbody>
-        </table>
-        <hr>
-        <form onSubmit="App.castVote(); return false;" id="voteDropList" style="display: none;">
-          <div class="form-group">
-            <div class="col-md-12 text-center">
-              <label for="candidatesSelect">Select the best pet</label>
-            </div>
-            <select class="form-control" id="candidatesSelect"></select>
-          </div>
-          <div class="col-md-12 text-center">
-            <button type="submit" class="btn btn-success">Submit</button>
-          </div><br /><br />
-          <hr>
-        </form>
-      </div>
-    </div>
 
-    <div id="loader">
-      <p class="text-center" style="font-size: 19px; color: yellow;">
-        Loading...</p>
-    </div>
-
-    <div id="hasVoted" style="font-size: 19px; color: tomato;margin-bottom: 26px; text-align: center; display: none;">
-      Voting Success!
-    </div>
+    
     <table>
       <tr>
         <td>
@@ -160,10 +123,11 @@ fieldset {
     </div>
   </td>
   </tr>
+</fieldset>
 
   </table>
 
-</fieldset>
+
 
     <div id="petsRow" class="row">
       <!-- PETS LOAD HERE -->
@@ -188,32 +152,16 @@ fieldset {
           <button class="btn btn-default btn-return" disabled type="button" data-id="0">Return</button>
           <br /><br />
           <strong>Owner</strong>: <span class="pet-owner">None</span><br />
-          <strong>Owner Address:</strong><br /><span class="adopter-address"></span><br />
+          <strong>Owner Address:</strong><br /><span class="owner-address"></span><br />
 
-    <div id="petTemplate" style="display: none;">
-      <div class="col-sm-6 col-md-6 col-lg-4">
-        <div class="panel panel-default panel-pet">
-          <div class="panel-heading">
-            <h3 class="panel-title">Scrappy</h3>
-          </div>
-          <div class="panel-body">
-            <img alt="140x140" data-src="holder.js/140x140" class="img-rounded img-center" style="width: 100%;" src="images/golden-retriever.jpeg" data-holder-rendered="true">
-            <br/><br/>
-            <strong>Breed</strong>: <span class="pet-breed">Golden Retriever</span><br/>
-            <strong>Age</strong>: <span class="pet-age">3</span><br/>
-            <strong>Location</strong>: <span class="pet-location">Warren, MI</span><br/><br/>
 
-            <button class="btn btn-default btn-adopt" type="button" data-id="0">Adopt</button>
-            <button class="btn btn-default btn-return" disabled type="button" data-id="0">Return</button>
-            <br/><br/>
-            <strong>Owner Address:</strong><br/><span class="owner-address"></span><br/>
-            
-          </div>
         </div>
       </div>
     </div>
-    <hr/>
-    <br/>
+  </div>
+  <hr/>
+  <br/>
+
 
     <div class="container" style="width: 700px;">
       <div style="font-size: 30px; text-align: center">
@@ -222,6 +170,21 @@ fieldset {
       <div id="voteSuccess" style="font-size: 20px; color: tomato; text-align: center; display: none;">
         Voting Success!
       </div><br/>
+      <form></form>
+      <form id="mostAdopted" onSubmit="App.handleMostAdopted(); return false;" style="display: none;">
+        <div class="form-group">
+          <div class="col-md-12 text-center">
+            <label for="mostAdoptedSelection">Most Adopted Pet</label>
+          </div>
+          <select class="form-control" id="mostAdoptedSelection"></select>
+        </div>
+        <div class="col-md-12 text-center">
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div><br/><br/>
+        <hr>
+      </form>
+
+      
       <div id="voteArea" >
         <form id="voteList" onSubmit="App.handleVote(); return false;" style="display: none;">
           <div class="form-group">
@@ -235,6 +198,7 @@ fieldset {
           </div><br/><br/>
           <hr>
         </form>
+
         <table class="table table-striped">
           <thead>
             <tr>
@@ -245,14 +209,22 @@ fieldset {
           <tbody id="voteResults" style="text-align: center"></tbody>
         </table>
         <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">Customers number</th>
+              <th class="text-center">Pets adopted</th>
+            </tr>
+          </thead>
+          <tbody id="adoptResults" style="text-align: center"></tbody>
+        </table>
       </div>
+      
     </div>
+
   <hr/>
   <br/><br/>
-        </div>
-      </div>
-    </div>
-  </div>
+        
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

@@ -74,6 +74,14 @@ App = {
     var petId = parseInt($(event.target).data('id'));
 
     var adoptionInstance;
+    var adopted;
+    var adoptResults = $("#adoptResults");
+    adoptResults.adopted += 1;
+    if (adoptResults.adopted == undefined){
+      adoptResults.adopted = 1;}
+    var customers = 1;
+
+    adoptResults.append("<tr><td>" + customers + "</td><td>" + adopted + "</td></tr>")
 
     web3.eth.getAccounts(function(error, accounts) {
       if (error) {
@@ -191,6 +199,14 @@ App = {
 
     var returnInstance;
 
+    
+    var adoptResults = $("#adoptResults");
+    var adopted = 
+    adoptResults.adopted -= 1;
+    var customers;
+
+    adoptResults.append("<tr><td>" + customers + "</td><td>" + adopted + "</td></tr>")
+
     web3.eth.getAccounts(function (error, accounts) {
       if (error) {
         console.log(error);
@@ -232,9 +248,27 @@ App = {
     });
   },
 
+  handleMostAdopted: function () {
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var voteInstance;
+
+      App.contracts.Adoption.deployed().then(function(instance) {
+        voteInstance = instance;
+        return voteInstance.mostAdopted();
+      }).then(function(result) {
+        $("#mostAdopted").html(result);
+      }).catch(function(err) {
+        console.error(err);
+      });
+    });
+  },
 
 
-};
+
   
     /*
      * Replace me...
@@ -295,9 +329,9 @@ App = {
               }
               }
             };
-          },
+          }
+        }
           
-  };
 
 $(function() {
   $(window).load(function() {
