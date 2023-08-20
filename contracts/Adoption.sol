@@ -93,6 +93,7 @@ contract Adoption {
 		require(petId >= 0 && petId <= 15);
 		candidates[petId].count ++;
 		voters[msg.sender] = true;
+		emit voteAnimal(petId);
 
 		if (stringsEquals(candidates[petId].breed, "Scottish Terrier")) {
 			STCount ++;
@@ -106,7 +107,7 @@ contract Adoption {
 			//error Invalid breed
 		}
 
-		emit voteAnimal(petId);
+		
 	}
 
 	function mostAdopted() public returns (string memory){
